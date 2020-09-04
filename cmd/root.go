@@ -56,7 +56,7 @@ func Execute() error {
 			}
 
 			if err != nil {
-				panic(err)
+				os.Exit(0)
 			}
 		}
 	}

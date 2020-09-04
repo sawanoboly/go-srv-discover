@@ -29,14 +29,14 @@ func Execute() error {
 	rv := net.Resolver{}
 	_, srvs, err := rv.LookupSRV(ctx, "", "", srvT)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, err.Error())
+		fmt.Fprintf(os.Stderr, err.Error()+"\n")
 		os.Exit(1)
 	}
 
 	for _, srv := range srvs {
 		addrs, err := rv.LookupHost(ctx, srv.Target)
 		if err != nil {
-			fmt.Fprintf(os.Stderr, err.Error())
+			fmt.Fprintf(os.Stderr, err.Error()+"\n")
 			os.Exit(1)
 		}
 		// use just one record, enough.

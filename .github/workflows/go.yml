@@ -31,11 +31,11 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v .
+      run: go build -o gsr -v .
 
     - name: Test
       run: go test -v .
     - uses: actions/upload-artifact@v2
       with:
-        name: go-srv-discover
-        path: go-srv-discover
+        name: gsr
+        path: gsr

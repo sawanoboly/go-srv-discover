@@ -20,10 +20,12 @@ func Execute() error {
 		srvT        string
 		useRedis    bool
 		socketRedis bool
+		cacheTTL    int
 	)
 	flag.StringVar(&srvT, "srv", "_http._tcp.mxtoolbox.com", "string of SRV RR")
 	flag.BoolVar(&useRedis, "redis", false, "use redis to save result. (default false)")
 	flag.BoolVar(&socketRedis, "socket-redis", false, "use unix domain socket to connect with redis. (default false)")
+	flag.IntVar(&cacheTTL, "ttl", 20, "TTL of redis-cache")
 	flag.Parse()
 
 	rv := net.Resolver{}
@@ -49,10 +51,10 @@ func Execute() error {
 					Network: "unix",
 					Addr:    "/var/run/redis/redis.sock",
 				})
-				err = rc.Set(ctx, srvT, rr, time.Second*10).Err()
+				err = rc.Set(ctx, srvT, rr, time.Duration(cacheTTL)*time.Second).Err()
 			} else {
 				rc := redis.NewClient(&redis.Options{})
-				err = rc.Set(ctx, srvT, rr, time.Second*10).Err()
+				err = rc.Set(ctx, srvT, rr, time.Duration(cacheTTL)*time.Second).Err()
 			}
 
 			if err != nil {

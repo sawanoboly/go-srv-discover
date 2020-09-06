@@ -15,3 +15,8 @@ $ gsr --help
         TTL of redis-cache (default 20)
 ```
 
+
+```
+$ gsr -srv service.srv.local
+xxx.xxx.xxx.xxx:80 # without linefeed.
+```

@@ -37,7 +37,7 @@ jobs:
       run: go test -v .
     - name: build alpine
       run: |
-        docker build -t build-alpine:gh
+        docker build -t build-alpine:gh .
         docker run -v `pwd`/build:/go/src/github.com/sawanoboly/go-srv-discover/build build-alpine:gh
     - uses: actions/upload-artifact@v2
       with:

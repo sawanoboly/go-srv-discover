@@ -45,7 +45,9 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: Release ${{ github.ref }}
-        body: "x86_64"
+        body: |
+          - glibc linux
+          - alpine
         draft: false
         prerelease: true
     - name: Upload Release Asset

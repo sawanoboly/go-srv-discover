@@ -1,5 +1,7 @@
 # go-srv-discover
 
+Returns 1 IPv4 address and port.
+
 
 ```
 $ gsr --help

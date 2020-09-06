@@ -33,10 +33,18 @@ jobs:
 
     - name: Test
       run: go test -v .
+    - name: build alpine
+      run: |
+        docker build -t build-alpine:gh .
+        docker run -v `pwd`/build:/go/src/github.com/sawanoboly/go-srv-discover/build build-alpine:gh
     - uses: actions/upload-artifact@v2
       with:
         name: gsr
         path: gsr
+    - uses: actions/upload-artifact@v2
+      with:
+        name: gsr.alpine
+        path: build/gsr.alpine
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -59,4 +67,14 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./gsr
         asset_name: gsr
+        asset_content_type: application/octet-stream
+    - name: Upload Release Asset
+      id: upload-release-asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/gsr.alpine
+        asset_name: gsr.alpine
         asset_content_type: application/octet-stream

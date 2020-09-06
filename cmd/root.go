@@ -41,7 +41,7 @@ func Execute() error {
 		}
 		// use just one record, enough.
 		rr := addrs[0] + ":" + strconv.Itoa(int(srv.Port))
-		fmt.Printf("%v\n", rr)
+		fmt.Printf("%v", rr)
 
 		if useRedis {
 			if socketRedis {

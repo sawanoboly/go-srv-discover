@@ -68,8 +68,8 @@ jobs:
         asset_path: ./gsr
         asset_name: gsr
         asset_content_type: application/octet-stream
-    - name: Upload Release Asset
-      id: upload-release-asset
+    - name: Upload Release Asset alpine
+      id: upload-release-asset-alpine
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

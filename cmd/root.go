@@ -19,14 +19,46 @@ func Execute() error {
 	var (
 		srvT        string
 		useRedis    bool
+		useRedisL   bool
 		socketRedis bool
 		cacheTTL    int
 	)
 	flag.StringVar(&srvT, "srv", "_http._tcp.mxtoolbox.com", "string of SRV RR")
 	flag.BoolVar(&useRedis, "redis", false, "use redis to save result. (default false)")
+	flag.BoolVar(&useRedisL, "redisl", false, "use redis to load cache. (default false)")
 	flag.BoolVar(&socketRedis, "socket-redis", false, "use unix domain socket to connect with redis. (default false)")
 	flag.IntVar(&cacheTTL, "ttl", 20, "TTL of redis-cache")
 	flag.Parse()
+
+	if useRedisL {
+		if socketRedis {
+			rc := redis.NewClient(&redis.Options{
+				Network: "unix",
+				Addr:    "/var/run/redis/redis.sock",
+			})
+			rr, err := rc.Get(ctx, srvT).Result()
+			if err == redis.Nil {
+			} else if err != nil {
+				os.Exit(0)
+			} else {
+				// use just one record, enough.
+				fmt.Printf("%v", rr)
+				return err
+			}
+		} else {
+			rc := redis.NewClient(&redis.Options{})
+			rr, err := rc.Get(ctx, srvT).Result()
+			if err == redis.Nil {
+			} else if err != nil {
+				os.Exit(0)
+			} else {
+				// use just one record, enough.
+				fmt.Printf("%v", rr)
+				return err
+			}
+		}
+
+	}
 
 	rv := net.Resolver{}
 	_, srvs, err := rv.LookupSRV(ctx, "", "", srvT)

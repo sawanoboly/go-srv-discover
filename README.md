@@ -1,1 +1,3 @@
 # go-srv-discover
+
+TODO: refuctor...
